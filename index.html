@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+<title>TGIdeas - Life Intents</title>
+
+<script type="text/javascript" src="assets/js/cardview.js"></script>
+<script src="assets/data/intent.js"></script>
+<script src="assets/js/hammer.min.js"></script>
+<script type="text/javascript">
+
+var deck;
+function loaded () {
+    deck = new CardView('#wrapper', {
+        direction: 'h',
+        dataset: data,
+        onUpdateContent: function (el, data) {
+            el.querySelector('img').src = data.img;
+            el.querySelector('h3').innerHTML = data.title;
+            el.querySelector('p').innerHTML = data.text;
+        }
+    });
+
+    var hammer1 = new Hammer(document.body);
+
+    // let the pan gesture support all directions.
+    // this will block the vertical scrolling on a touch-device while on the element
+    hammer1.get('swipe').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+    // listen to events...
+    hammer1.on("swipeup", function(ev) {
+        document.body.className = "";
+    });
+    hammer1.on("swipedown",function(ev){
+        document.body.className = "cover-on";
+    });
+    /*
+    var hammer2 = new Hammer(document.getElementById('wrapper'));
+
+    // let the pan gesture support all directions.
+    // this will block the vertical scrolling on a touch-device while on the element
+    hammer2.get('pan').set({ direction: Hammer.DIRECTION_DOWN });
+
+    // listen to events...
+    hammer2.on("pandown", function(ev) {
+        document.body.className = "cover-on";
+    });
+    */
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+</script>
+
+<style>
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+}
+
+body, ul, li, h1, h2, h3, img, p {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    list-style: none;
+}
+
+body {
+    /* On modern browsers, prevent the whole page to bounce */
+    overflow: hidden;
+    background-color: #aaa;
+    font-size: 12px;
+}
+
+#wrapper {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    max-width: 568px;
+    height: 100%;
+    max-height: 568px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+
+    /* Prevent native touch events on Windows */
+    -ms-touch-action: none;
+
+    /* Prevent the callout on tap-hold and text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    /* Prevent elements to be highlighted on tap */
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+    /* Prevent text resize on orientation change, useful for web-apps */
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+#deck {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+
+    background: #eee;
+}
+
+.card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    z-index: 10;
+
+    /* Put the scroller into the HW Compositing layer right from the start */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.card div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(0,0,0,.1);
+    padding: 20px;
+    background: #fff;
+    background-position: 50% 50%;
+    background-size: 95% 95%;
+    background-repeat: no-repeat;
+    font-size: 1.6em;
+}
+
+.card img {
+    float: left;
+    margin: 0 10px 10px 0;
+    border: 1px solid #000;
+}
+
+.card h3 {
+    background-color: #333;
+    color:#fff;
+    padding: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.cover-wrapper{
+    position:absolute;
+    z-index:11;
+    top:-100%;
+    left:0;
+    height:100%;
+    width:100%;
+    background:#000;
+   
+}
+.cover-title{
+    font-size:26px;
+    font-weight:normal;
+    text-align:center;
+    height:50px;
+    line-height:50px;
+    color:#fff;
+    text-transform:uppercase;
+}
+.cover{
+    position:absolute;
+    z-index:11;
+    top:50px;
+    left:0;
+    bottom:0;
+    width:100%;
+    display: -webkit-box; 
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    /* Then we define the flow direction and if we allow the items to wrap 
+    * Remember this is the same as:
+    * flex-direction: row;
+    * flex-wrap: wrap;
+    */
+    flex-flow: row wrap;
+    -webkit-flex-flow;row wrap;
+  
+    /* Then we define how is distributed the remaining space */
+    justify-content: center;
+    -webkit-justify-content:center;
+
+    align-items:center;
+    -webkit-align-items:center;
+    
+    background:#eee;    
+}
+.cover-item{
+    background:#000;
+    padding:15px;
+    width:80px;
+    height:80px;  
+    text-align:center;
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    margin:5px;
+}
+.cover-img{
+    vertical-align:top;
+    display:block;
+    width:100%;
+    border-radius:50%;
+    -webkit-border-radius:50%;
+}
+.wrapper,.cover-wrapper {
+    transiton: top .5s linear;
+    -webkit-transition:top .5s linear;
+}
+.cover-on .wrapper{
+    top:100% !important;
+}
+.cover-on .cover-wrapper{
+    top:0;
+}
+</style>
+
+</head>
+<body class="cover-on" onload="loaded()">
+
+<div id="cover" class="cover-wrapper">
+    <h1 class="cover-title">Life intent</h1>
+    <div class="cover">
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars2.githubusercontent.com/u/1005746?v=2&s=96" alt="xx"/>                  
+    </div>
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars1.githubusercontent.com/u/4222763?v=2&s=96" alt="xx"/>                  
+    </div>
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars0.githubusercontent.com/u/8232739?v=2&s=96" alt="xx"/>                  
+    </div>  
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars0.githubusercontent.com/u/3890675?v=2&s=96" alt="xx"/>                  
+    </div>  
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars1.githubusercontent.com/u/85879?v=2&s=96" alt="xx"/>                  
+    </div>  
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars1.githubusercontent.com/u/3692129?v=2&s=96" alt="xx"/>                  
+    </div>  
+    <div class="cover-item">
+        <img class="cover-img" src="https://avatars1.githubusercontent.com/u/3829334?v=2&s=96" alt="xx"/>                  
+    </div>
+    </div>  
+</div>
+
+<div id="wrapper" class="wrapper">
+    <ul id="deck">
+        <li class="card"><div>
+            <h3>Title</h3>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnn
+AAAAAElFTkSuQmCC" alt="thumb" width="125" height="125"/>
+            <p>Text</p>
+        </div></li>
+        <li class="card"><div>
+            <h3>Title</h3>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnn
+AAAAAElFTkSuQmCC" alt="thumb" width="125" height="125"/>
+            <p>Text</p>
+        </div></li>
+        <li class="card"><div>
+            <h3>Title</h3>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnn
+AAAAAElFTkSuQmCC" alt="thumb" width="125" height="125"/>
+            <p>Text</p>
+        </div></li>
+    </ul>
+</div>
+
+</body>
+</html>
